@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Accessibility</string>
+
+
+    <string name="accessibility_service_description">
+        【智能安装】下载或更新应用时，省去繁琐手动点击\n\n【智能卸载】批量卸载应用，一键省力操作，释放手机空间\n\n并且此功能完全不需要root您的手机。只需您打开服务，弹窗提示需要您的授权时，点击确定便可。\n\n此功能支持安卓4.1以上的系统，如果您对此功能有任何疑问，请联系我们
+    </string>
+</resources>
