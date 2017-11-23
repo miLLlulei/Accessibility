@@ -12,6 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.mill.accessibility.accessibility.BaseAccessibility;
+import com.mill.accessibility.accessibility.MyAccessibility;
 import com.mill.accessibility.mission.ApkMission;
 import com.mill.accessibility.utils.LogUtils;
 
@@ -42,7 +43,7 @@ public class ForceStopAccessbility extends BaseAccessibility {
 
             AccessibilityNodeInfo nodeInfo = event.getSource();
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-                nodeInfo = service.getRootInActiveWindow();
+                nodeInfo = ((MyAccessibility)service).getRootInActiveWindow(nodeInfo);
             }
 
             //查找并处理确定按钮

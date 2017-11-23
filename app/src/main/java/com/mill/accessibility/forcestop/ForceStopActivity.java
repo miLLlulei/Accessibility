@@ -53,6 +53,7 @@ public class ForceStopActivity extends Activity {
             intent.setData(uri);
             context.startActivity(intent);
         } catch (Exception e) {
+            finish();
             if (LogUtils.isDebug()) {
                 e.printStackTrace();
             }

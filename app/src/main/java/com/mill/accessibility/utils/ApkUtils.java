@@ -86,4 +86,43 @@ public class ApkUtils {
         }
     }
 
+    /**
+     * 使用 LocalApkMgr.getInstance().isApkInstalled 代替
+     */
+    @Deprecated
+    public static boolean isApkInstalled(Context context, String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+        if (packageName.equals(context.getPackageName())) {
+            return true;
+        }
+        boolean result = false;
+
+        try {
+            result = context.getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_DISABLED_COMPONENTS) != null;
+        } catch (NameNotFoundException | RuntimeException e) {
+//            java.lang.RuntimeException: Package manager has died
+//            at android.app.ApplicationPackageManager.getPackageInfo(ApplicationPackageManager.java:77)
+//            at com.qihoo.utils.ApkUtils.isApkInstalled(AppStore:191)
+//            at com.qihoo.appstore.base.AppStoreApplication$13.run(AppStore:576)
+//            at android.os.Handler.handleCallback(Handler.java:725)
+//            at android.os.Handler.dispatchMessage(Handler.java:92)
+//            at android.os.Looper.loop(Looper.java:137)
+//            at android.os.HandlerThread.run(HandlerThread.java:60)
+//            Caused by: android.os.TransactionTooLargeException
+//            at android.os.BinderProxy.transact(Native Method)
+//            at android.content.pm.IPackageManager$Stub$Proxy.getPackageInfo(IPackageManager.java:1362)
+//            at java.lang.reflect.Method.invokeNative(Native Method)
+//            at java.lang.reflect.Method.invoke(Method.java:511)
+//            at com.morgoo.droidplugin.hook.HookedMethodHandler.doHookInner(AppStore:51)
+//            at com.morgoo.droidplugin.hook.proxy.ProxyHook.invoke(AppStore:60)
+//            at $Proxy8.getPackageInfo(Native Method)
+//            at android.app.ApplicationPackageManager.getPackageInfo(ApplicationPackageManager.java:72)
+        }
+
+        return result;
+    }
+
 }

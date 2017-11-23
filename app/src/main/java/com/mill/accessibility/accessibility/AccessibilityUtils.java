@@ -28,7 +28,7 @@ public class AccessibilityUtils {
                     enabledServices.add(enabledService);
                 }
             }
-            ComponentName appstoreComponent = new ComponentName(context, AppstoreAccessibility.class);
+            ComponentName appstoreComponent = new ComponentName(context, MyAccessibility.class);
             BaseAccessibility.isEnable.set(enabledServices.contains(appstoreComponent));
             BaseAccessibility.logPrint("getAccessibilityStatus status:" + BaseAccessibility.isEnable.get() + "  enabledServicesSetting=" + enabledServicesSetting);
         } catch (Throwable e) {

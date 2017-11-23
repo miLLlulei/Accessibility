@@ -15,21 +15,24 @@ import com.mill.accessibility.smartinstall.SmartInstaller;
 import com.mill.accessibility.smartinstall.SmartUninstaller;
 import com.mill.accessibility.utils.DeviceUtils;
 import com.mill.accessibility.utils.LogUtils;
+import com.mill.accessibility.utils.ReflectUtils;
 
 /**
  */
 @SuppressLint("NewApi")
-public class AppstoreAccessibility extends AccessibilityService {
+public class MyAccessibility extends AccessibilityService {
     public static final int ACCESS_MODEL_INSTALL = 1;
     public static final int ACCESS_MODEL_UNINSTALL = 2;
     public static final int ACCESS_MODEL_FORCESTOP = 3;
     public static final int ACCESS_MODEL_UNINSTALL_CLEAR = 4;
     public static final String[] packages = new String[]{"com.android.packageinstaller", "com.google.android.packageinstaller", "com.android.settings",
             "com.qihoo360.mobilesafe", "com.qihoo.cleandroid_cn", "com.samsung.android.packageinstaller",
-            "com.cleanmaster.mguard_cn", "com.huawei.systemmanager", "com.lenovo.safecenter"}; //解决卸载残留
+            "com.cleanmaster.mguard_cn", "com.huawei.systemmanager", "com.lenovo.safecenter"
+            , "com.miui.packageinstaller"
+    };//, "com.lbe.security.miui"
     public static boolean needClearTask = true;
 
-    private String TAG = AppstoreAccessibility.class.getSimpleName();
+    private String TAG = MyAccessibility.class.getSimpleName();
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -70,7 +73,7 @@ public class AppstoreAccessibility extends AccessibilityService {
 
     @Override
     public void onServiceConnected() {
-        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
+        AccessibilityServiceInfo info = getServiceInfo();
         info.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED |
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
                 | AccessibilityEvent.TYPE_VIEW_SCROLLED
@@ -82,12 +85,14 @@ public class AppstoreAccessibility extends AccessibilityService {
 
         info.notificationTimeout = 100;
 
+        ReflectUtils.setFieldValue(info, "mCapabilities", info.getCapabilities() | AccessibilityServiceInfo.CAPABILITY_CAN_RETRIEVE_WINDOW_CONTENT);
+
         this.setServiceInfo(info);
 
         BaseAccessibility.isEnable.set(true);
         if (needClearTask) {
             InstallAccessibility.openSettingAccessibilityNeedTips(this);
-            AppstoreAccessibility.needClearTask = false;
+            MyAccessibility.needClearTask = false;
             LocalAccessibilityManager.getInstance().notifyAccessibilityChanged(true);
         }
 
@@ -190,6 +195,21 @@ public class AppstoreAccessibility extends AccessibilityService {
         }
     }
 
+    public AccessibilityNodeInfo getRootInActiveWindow(AccessibilityNodeInfo nodeInfo) {
+        AccessibilityNodeInfo rootNode = getRootInActiveWindow();
+        if (rootNode == null) {
+            BaseAccessibility.logPrint("processInstallApplication  RootInActiveWindow = " + rootNode);
+            //如果获取不到，则循环Parent，得到根节点
+            rootNode = nodeInfo;
+            while (rootNode != null && rootNode.getParent() != null) {
+                rootNode = rootNode.getParent();
+            }
+        }
+        nodeInfo = rootNode;
+        BaseAccessibility.logPrint("processInstallApplication  nodeInfo= " + nodeInfo);
+        return nodeInfo;
+    }
+
     private void processInstallApplication(AccessibilityEvent event) {
 
         boolean isClickInstall = false;
@@ -200,7 +220,7 @@ public class AppstoreAccessibility extends AccessibilityService {
 
             AccessibilityNodeInfo nodeInfo = event.getSource();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {//大于15api增加了新的方法
-                nodeInfo = getRootInActiveWindow();
+                nodeInfo = getRootInActiveWindow(nodeInfo);
             }
 
             boolean[] bShowFloatingWindow = {false};

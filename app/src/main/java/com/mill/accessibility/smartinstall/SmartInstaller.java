@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.mill.accessibility.accessibility.AppstoreAccessibility;
+import com.mill.accessibility.accessibility.MyAccessibility;
 import com.mill.accessibility.accessibility.BaseAccessibility;
 import com.mill.accessibility.utils.ContextUtils;
 
@@ -82,9 +82,9 @@ public class SmartInstaller extends InstallAccessibility {
         if (TextUtils.isEmpty(key) || ContextUtils.getApplicationContext().getPackageName().equals(key)) {
             return;
         }
-        BaseAccessibility.accessModel = AppstoreAccessibility.ACCESS_MODEL_INSTALL;
+        BaseAccessibility.accessModel = MyAccessibility.ACCESS_MODEL_INSTALL;
 
-        BaseAccessibility.setAccessMode(AppstoreAccessibility.ACCESS_MODEL_INSTALL);
+        BaseAccessibility.setAccessMode(MyAccessibility.ACCESS_MODEL_INSTALL);
         maps.remove(key);
         SmartInstallItem item = new SmartInstallItem();
         item.infoName = labelName;

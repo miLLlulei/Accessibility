@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.mill.accessibility.accessibility.AppstoreAccessibility;
+import com.mill.accessibility.accessibility.MyAccessibility;
 import com.mill.accessibility.accessibility.BaseAccessibility;
 import com.mill.accessibility.mission.ApkMission;
 import com.mill.accessibility.mission.InstallConsts;
@@ -38,10 +38,10 @@ public class ForceStopMission extends ApkMission {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    BaseAccessibility.accessModel = AppstoreAccessibility.ACCESS_MODEL_FORCESTOP;
+                    BaseAccessibility.accessModel = MyAccessibility.ACCESS_MODEL_FORCESTOP;
                     ForceStopAccessbility.forceStop(mContext, mPkgName, mCallback);
 
-//                    BaseAccessibility.setAccessMode(AppstoreAccessibility.ACCESS_MODEL_FORCESTOP);
+//                    BaseAccessibility.setAccessMode(MyAccessibility.ACCESS_MODEL_FORCESTOP);
 //                    BaseAccessibility.forceStop(mPkgName, new SmallApkCallbackImp());
                 }
             });

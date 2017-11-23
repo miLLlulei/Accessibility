@@ -37,7 +37,7 @@ public class AccessibilityClearTaskActivity extends Activity {
         if(!mFirstResume){
 //            SmartInstallerSettingFloatingWindow.getInstances().dismissWindow();
             finish();
-            AppstoreAccessibility.needClearTask = false;
+            MyAccessibility.needClearTask = false;
         }else{
             mFirstResume = false;
             openSettingAccessibilityNeedTips(this);

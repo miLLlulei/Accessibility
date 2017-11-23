@@ -9,7 +9,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.mill.accessibility.accessibility.AppstoreAccessibility;
+import com.mill.accessibility.accessibility.MyAccessibility;
 import com.mill.accessibility.accessibility.BaseAccessibility;
 import com.mill.accessibility.accessibility.UninstallResidueAccessbility;
 import com.mill.accessibility.utils.ContextUtils;
@@ -66,10 +66,10 @@ public class SmartUninstaller extends InstallAccessibility {
             if (TextUtils.isEmpty(key)) {
                 return;
             }
-            accessModel = AppstoreAccessibility.ACCESS_MODEL_UNINSTALL;
+            accessModel = MyAccessibility.ACCESS_MODEL_UNINSTALL;
 
             //调用小apk里的方法智能卸载
-            BaseAccessibility.setAccessMode(AppstoreAccessibility.ACCESS_MODEL_UNINSTALL);
+            BaseAccessibility.setAccessMode(MyAccessibility.ACCESS_MODEL_UNINSTALL);
             maps.remove(key);
             SmartUnInstallItem item = new SmartUnInstallItem();
             item.key = key;

@@ -17,6 +17,8 @@ import com.mill.accessibility.utils.ToastUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.mill.accessibility.accessibility.MyAccessibility.packages;
+
 /**
  */
 
@@ -25,11 +27,13 @@ public class UninstallResidueAccessbility extends BaseAccessibility{
     private static final String[] residue_text =new String[]{"残留", "残余"};
     private static final String[] cancel_btn = new String[]{"取消", "Cancel", "cancel", "CANCEL",
                                                             "暂不删除",
-                                                            "暂不"};
-    private static final String[] packages = new String[]{"com.qihoo360.mobilesafe",
-                                                            "com.qihoo.cleandroid_cn",
-                                                            "com.cleanmaster.mguard_cn",
-                                                            "com.huawei.systemmanager"};
+                                                            "暂不", "确定"};
+//    private static final String[] packages = new String[]{"com.qihoo360.mobilesafe",
+//                                                            "com.qihoo.cleandroid_cn",
+//                                                            "com.cleanmaster.mguard_cn",
+//                                                            "com.miui.packageinstaller",
+//                                                            "com.huawei.systemmanager"
+//    };
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
     private AtomicBoolean isProcessCancelFinish = new AtomicBoolean(true);
     private int mNeedClickCount = 0;
@@ -45,7 +49,7 @@ public class UninstallResidueAccessbility extends BaseAccessibility{
         mMainHandler.postDelayed(timeoutRunnable, timeOut);
 
         isProcessCancelFinish.set(false);
-        BaseAccessibility.accessModel = AppstoreAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR;
+        BaseAccessibility.accessModel = MyAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR;
     }
 
     @SuppressLint("NewApi")
@@ -58,7 +62,7 @@ public class UninstallResidueAccessbility extends BaseAccessibility{
             if (isRegisterPkg(pkgName) && AccessibilityEvent.TYPE_VIEW_CLICKED != event.getEventType()) {
                 AccessibilityNodeInfo nodeInfo = event.getSource();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    nodeInfo = service.getRootInActiveWindow();
+                    nodeInfo = ((MyAccessibility)service).getRootInActiveWindow(nodeInfo);
                 }
 
                 // 判断是否有残留文字
@@ -79,7 +83,7 @@ public class UninstallResidueAccessbility extends BaseAccessibility{
                 if (mClickCount >= mNeedClickCount) {
                     if (isProcessCancelFinish.compareAndSet(false, true)) {
                         mMainHandler.removeCallbacks(timeoutRunnable);
-                        if (BaseAccessibility.accessModel == AppstoreAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR) {
+                        if (BaseAccessibility.accessModel == MyAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR) {
                             BaseAccessibility.resetAccessModel();
                         }
                         mNeedClickCount = 0;
@@ -105,7 +109,7 @@ public class UninstallResidueAccessbility extends BaseAccessibility{
         @Override
         public void run() {
             if (isProcessCancelFinish.compareAndSet(false, true)) {
-                if (BaseAccessibility.accessModel == AppstoreAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR) {
+                if (BaseAccessibility.accessModel == MyAccessibility.ACCESS_MODEL_UNINSTALL_CLEAR) {
                     BaseAccessibility.resetAccessModel();
                 }
                 mNeedClickCount = 0;

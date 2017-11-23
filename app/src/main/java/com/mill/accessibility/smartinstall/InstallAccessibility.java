@@ -11,7 +11,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.mill.accessibility.accessibility.AccessibilityClearTaskActivity;
-import com.mill.accessibility.accessibility.AppstoreAccessibility;
+import com.mill.accessibility.accessibility.MyAccessibility;
 import com.mill.accessibility.accessibility.BaseAccessibility;
 import com.mill.accessibility.utils.ContextUtils;
 import com.mill.accessibility.utils.ReflectUtils;
@@ -106,7 +106,7 @@ public class InstallAccessibility extends BaseAccessibility {
     }
 
     public static void openSettingAccessibilityNeedTips(Context context){
-        AppstoreAccessibility.needClearTask = true;
+        MyAccessibility.needClearTask = true;
         openSettingAccessibilityNeedTips(context, null);
 
 //        BaseAccessibility.setSmallApkCallback(new SmallApkCallbackImp());
@@ -164,7 +164,7 @@ public class InstallAccessibility extends BaseAccessibility {
             }
         }
         logPrint("isInSysInstallPage : strTopPName=" + strTopPName);
-        return AppstoreAccessibility.packages[0].equalsIgnoreCase(strTopPName);
+        return MyAccessibility.packages[0].equalsIgnoreCase(strTopPName);
     }
 
 
